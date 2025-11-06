@@ -1,0 +1,237 @@
+/* ==== ESTILO GENERAL ==== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  background: radial-gradient(circle at top, #090017, #000010);
+  overflow-y: auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ==== VIDEO DE FONDO ==== */
+#video-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -3;
+  opacity: 0.35;
+  filter: brightness(0.8) blur(2px);
+  pointer-events: none;
+}
+
+/* ==== FONDO ANIMADO DE ENERGÍA VIOLETA ==== */
+#fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#particles {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 30%, rgba(80,0,120,0.4), rgba(0,0,0,0.9));
+  filter: blur(1px);
+}
+
+/* ==== ENCABEZADO ==== */
+header {
+  text-align: center;
+  background: linear-gradient(135deg, #1e0033, #3c0066);
+  color: white;
+  padding: 40px 20px;
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  animation: headerGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes headerGlow {
+  from { box-shadow: 0 0 20px #6a00ff; }
+  to { box-shadow: 0 0 60px #a000ff; }
+}
+
+/* ==== SECCIONES / DIAPOSITIVAS ==== */
+.diapositiva {
+  margin: 60px auto;
+  padding: 40px;
+  max-width: 900px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 25px;
+  box-shadow: 0 0 35px rgba(150,0,255,0.3);
+  text-align: center;
+  color: white;
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 1.2s ease;
+}
+
+.diapositiva:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 45px rgba(180,0,255,0.6);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==== IMÁGENES ==== */
+.foto {
+  width: 60%;
+  border-radius: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  animation: imagenSecuencial 1.5s ease forwards;
+}
+
+.foto:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 35px rgba(255,255,255,0.35);
+}
+
+/* ✨ Animación suave de aparición secuencial */
+@keyframes imagenSecuencial {
+  0% { opacity: 0; transform: scale(0.95) translateY(30px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.foto:nth-of-type(1) { animation-delay: 0.2s; }
+.foto:nth-of-type(2) { animation-delay: 0.6s; }
+.foto:nth-of-type(3) { animation-delay: 1s; }
+.foto:nth-of-type(4) { animation-delay: 1.4s; }
+.foto:nth-of-type(5) { animation-delay: 1.8s; }
+.foto:nth-of-type(6) { animation-delay: 2.2s; }
+
+/* ==== BOTONES ==== */
+.btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: linear-gradient(90deg, #7a00ff, #00b3ff);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(100,0,255,0.4);
+  animation: botonEntrada 2s ease-in-out;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, #a355ff, #33ccff);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(160,0,255,0.6);
+}
+
+@keyframes botonEntrada {
+  0% { opacity: 0; transform: translateY(25px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ==== CANVAS ==== */
+canvas {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ==== TEXTO EN SIMULADOR ==== */
+#resultado {
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+
+/* ==== EFECTO DE LUZ NEÓN SUAVE ==== */
+h1, h2, h3 {
+  text-shadow:
+    0 0 10px #b166ff,
+    0 0 20px #8a33ff,
+    0 0 30px #6600ff;
+}
+
+/* ==== SCROLL PERSONALIZADO ==== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7a00ff, #00b3ff);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0014;
+}
+
+/* ==== GRÁFICA ==== */
+#simulacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#grafica {
+  display: block;
+  margin-top: 25px;
+  z-index: 2;
+  position: relative;
+}
+
+/* ==== 🎇 ANIMACIONES DE TEXTO ==== */
+@keyframes textoBrillante {
+  0% { opacity: 0; transform: translateY(30px); text-shadow: none; }
+  50% { opacity: 1; transform: translateY(0); text-shadow: 0 0 20px #b166ff; }
+  100% { text-shadow: 0 0 40px #8a33ff, 0 0 80px #6600ff; }
+}
+
+h1, h2, h3 {
+  animation: textoBrillante 3s ease-in-out, latido 3s ease-in-out infinite;
+  animation-fill-mode: forwards;
+}
+
+/* ==== 🌈 LETRAS CON GRADIENTE ANIMADO ==== */
+.texto-energia {
+  background: linear-gradient(90deg, #7a00ff, #00b3ff, #ff00e1);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: energia 5s linear infinite;
+}
+
+@keyframes energia {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* ==== 💫 EFECTO DE FLOTE ==== */
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.titulo-animado {
+  display: inline-block;
+  animation: flotar 3s ease-in-out infinite, latido 3s ease-in-out infinite;
+}
+
+/* ==== 💗 EFECTO DE LATIDO SUAVE ==== */
+@keyframes latido {
+  0%, 100% { transform: scale(1); text-shadow: 0 0 15px #b166ff; }
+  50% { transform: scale(1.08); text-shadow: 0 0 30px #ff00e1; }
+}

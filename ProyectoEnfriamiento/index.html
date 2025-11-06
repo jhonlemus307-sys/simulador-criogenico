@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto: Transporte en Frío de las Pajillas</title>
+  <link rel="stylesheet" href="../estilo/estilos.css">
+  <style>
+    /* Fondo de video */
+    .video-fondo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      opacity: 0.5;
+      filter: brightness(0.8) saturate(1.3) contrast(1.1);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 0, 30, 0.6);
+      z-index: -1;
+    }
+
+    body {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    header, .diapositiva {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* --- PANTALLA DE PRESENTACIÓN --- */
+    #presentacion {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 5, 25, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      text-align: center;
+      z-index: 10;
+      transition: opacity 1s ease;
+    }
+
+    #presentacion h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    #presentacion p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      animation: fadeInUp 2s ease forwards;
+    }
+
+    #presentacion button {
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #presentacion button:hover {
+      background-color: #0b7dda;
+    }
+
+    #contenido {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🎬 Pantalla de presentación -->
+  <div id="presentacion">
+    <h1>🧊 Ley de Enfriamiento de Newton</h1>
+    <p>Explora cómo la temperatura cambia durante el transporte criogénico.</p>
+    <button id="btnSiguiente">Siguiente ➡️</button>
+  </div>
+
+  <!-- 🎥 Video de fondo -->
+  <div id="contenido">
+    <video autoplay muted loop class="video-fondo">
+      <source src="../videos/fondo-criogenico.mp4" type="video/mp4">
+      Tu navegador no soporta videos en HTML5.
+    </video>
+
+    <header>
+      <h1>🌡️ Proyecto: Transporte en Frío de las Pajillas</h1>
+      <p>Un sistema innovador para mantener la temperatura criogénica durante el transporte.</p>
+    </header>
+
+    <!-- Diapositiva 1 -->
+    <section class="diapositiva">
+      <h2>🌡️ Laboratorio</h2>
+      <img src="../imagenes/camion-frio.jpg" alt="Camión refrigerado" class="foto">
+      <p>
+        Las pajillas se transportan cuidadosamente en <strong>camiones refrigerados</strong> equipados con sistemas de 
+        <strong>nitrógeno líquido</strong>, capaces de mantener temperaturas de hasta <strong>-196°C</strong>.
+        Estos vehículos están diseñados para evitar fluctuaciones térmicas durante el trayecto.
+      </p>
+    </section>
+
+    <!-- Diapositiva 2 -->
+    <section class="diapositiva">
+      <h2>🧊 Contenedores criogénicos</h2>
+      <img src="../imagenes/contenedor-nitrogeno.jpg" alt="Contenedor criogénico" class="foto">
+      <p>
+        Los contenedores criogénicos conservan la temperatura del nitrógeno líquido sin pérdidas térmicas significativas.
+        Gracias a su <strong>doble aislamiento y estructura hermética</strong>, son ideales para largos viajes y 
+        transportes rurales donde las condiciones ambientales son variables.
+      </p>
+    </section>
+
+    <!-- Diapositiva 3 -->
+    <section class="diapositiva">
+      <h2>🔬 Seguridad y control</h2>
+      <img src="../imagenes/tanque-criogenico.jpg" alt="Tanque criogénico" class="foto">
+      <p>
+        Cada contenedor cuenta con <strong>sensores de temperatura y presión</strong> que transmiten información en tiempo real.
+        Este monitoreo garantiza que las pajillas mantengan su integridad biológica y lleguen en condiciones óptimas.
+      </p>
+    </section>
+
+    <!-- Diapositiva 4 -->
+    <section class="diapositiva">
+      <h2>Ley de Enfriamiento de Newton</h2>
+      <img src="../imagenes/camion-friom.jpg" alt="Camión refrigerado" class="foto">
+      <p>
+        La Ley de Enfriamiento de Newton describe cómo cambia la temperatura de un cuerpo (por ejemplo, un tanque, una pajilla o un líquido) cuando está expuesto a un ambiente con una temperatura diferente.
+      </p>
+    </section>
+
+    <!-- Diapositiva 5 -->
+    <section class="diapositiva">
+      <h2>🧊 PROBLEMA</h2>
+      <p>
+        En el Laboratorio Central de Criopreservación Bovino (LCCB), un tanque criogénico de transporte modelo 35XT sufrió un impacto lateral que dañó su aislamiento al vacío.
+        Esto hace que el nitrógeno líquido se evapore más rápido, y el tanque comience a calentarse gradualmente.
+        <br><br>
+        El equipo debe calcular, con la Ley de Enfriamiento de Newton, cuánto tiempo tienen antes de que la temperatura suba de –196 °C (inicial) a –130 °C (crítica), sabiendo que el ambiente está a 30 °C y que el daño aumenta la pérdida térmica con una constante k = 0.0015 min⁻¹.
+      </p>
+    </section>
+
+    <!-- Diapositiva 6 -->
+    <section class="diapositiva">
+      <h2>🧪 Prueba la simulación térmica</h2>
+      <p>
+        Analiza cómo varía la temperatura de las pajillas durante su transporte según el tiempo, el ambiente
+        y la constante de enfriamiento aplicando la <strong>Ley de Enfriamiento de Newton</strong>.
+      </p>
+      <img src="../imagenes/laboratorio.jpg" alt="Simulación térmica" class="foto">
+      <button class="btn" onclick="location.href='../simulador/simulador.html'">Ir al simulador ➡️</button>
+    </section>
+  </div>
+
+  <script>
+    // Mostrar el contenido al hacer clic en "Siguiente"
+    document.getElementById("btnSiguiente").addEventListener("click", function() {
+      document.getElementById("presentacion").style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById("presentacion").style.display = "none";
+        document.getElementById("contenido").style.display = "block";
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>

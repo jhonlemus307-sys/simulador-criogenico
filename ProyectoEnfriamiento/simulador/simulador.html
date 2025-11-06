@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ley de Enfriamiento - Simulación Criogénica</title>
+  <link rel="stylesheet" href="../estilo/estilos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* === FONDO INTERACTIVO DE ENERGÍA VIOLETA === */
+    body {
+      margin: 0;
+      overflow-y: auto;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #090017, #000010);
+      color: #fff;
+      min-height: 100vh;
+      animation: fadeBody 1.2s ease-out;
+    }
+
+    @keyframes fadeBody {
+      from { opacity: 0; transform: scale(1.02); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    #fondo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    #particles {
+      width: 100%;
+      height: 100%;
+    }
+
+    .diapositiva {
+      position: relative;
+      z-index: 1;
+      margin: 60px auto;
+      padding: 40px;
+      max-width: 900px;
+      background: rgba(20, 0, 50, 0.6);
+      border-radius: 25px;
+      box-shadow: 0 0 40px rgba(150, 0, 255, 0.3);
+      text-align: center;
+      animation: fadeIn 1s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    h1, h2 {
+      color: #cbaaff;
+      text-shadow: 0 0 10px #a05cff;
+    }
+
+    h1 {
+      animation: glowPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 15px #b07fff; }
+      to { text-shadow: 0 0 35px #d0a0ff; }
+    }
+
+    .foto {
+      width: 80%;
+      border-radius: 20px;
+      margin: 20px 0;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: linear-gradient(90deg, #5a00ff, #9b4dff);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(150, 50, 255, 0.6);
+    }
+
+    .btn:hover {
+      transform: scale(1.07);
+      background: linear-gradient(90deg, #8e2de2, #4a00e0);
+      box-shadow: 0 0 30px rgba(180, 100, 255, 0.9), 0 0 60px rgba(150, 0, 255, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+    }
+
+    input {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #777;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      text-align: center;
+      width: 150px;
+    }
+
+    canvas {
+      display: block;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 400px;
+      pointer-events: auto;
+      margin-top: 20px;
+    }
+
+    /* 🌟 Resultado con efecto de panel digital */
+    #resultado {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: rgba(50, 0, 80, 0.4);
+      box-shadow: 0 0 15px rgba(200, 100, 255, 0.3);
+      border: 1px solid rgba(180, 120, 255, 0.4);
+      animation: popIn 0.7s ease;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🌌 Fondo interactivo -->
+  <div id="fondo">
+    <canvas id="particles"></canvas>
+  </div>
+
+  <!-- 🌡️ Diapositiva 1 -->
+  <section class="diapositiva" id="problema">
+    <h1>🚛 Transporte Criogénico de Pajillas</h1>
+    <p style="font-size:18px; text-align:justify; line-height:1.6;">
+      En el proceso de inseminación artificial, las pajillas con material genético 
+      deben conservarse en contenedores con <strong>nitrógeno líquido</strong> a temperaturas cercanas a <strong>-196 °C</strong>.  
+      Este proyecto aplica la <strong>Ley de Enfriamiento de Newton</strong> para simular el comportamiento térmico 
+      y detectar condiciones de <strong>riesgo o daño</strong> durante el transporte.
+    </p>
+    <img src="../imagenes/transporte.jpg" class="foto" alt="Transporte de pajillas">
+    <button class="btn" onclick="mostrarSimulacion()">Iniciar Simulación ▶️</button>
+  </section>
+
+  <!-- 🧪 Diapositiva 2 -->
+  <section class="diapositiva" id="simulacion" style="display:none;">
+    <h2>🧪 Simulación Térmica</h2>
+
+    <div class="inputs">
+      <label>🌡️ Temp. inicial (°C):</label>
+      <input type="number" id="tempInicial" value="-196">
+
+      <label>🌬️ Temp. ambiente (°C):</label>
+      <input type="number" id="tempAmbiente" value="25">
+
+      <label>⏱️ Tiempo (min):</label>
+      <input type="number" id="tiempo" value="120">
+
+      <label>📉 Constante k:</label>
+      <input type="number" id="k" value="0.02" step="0.01">
+
+      <button class="btn" onclick="calcularEnfriamiento()">Simular 🔍</button>
+    </div>
+
+    <h3 id="resultado"></h3>
+    <canvas id="grafica" width="600" height="300"></canvas>
+    <br>
+    <button class="btn" onclick="volverInicio()">⬅️ Volver al Problema</button>
+  </section>
+
+  <footer>
+    <p>Proyecto educativo sobre la Ley de Enfriamiento de Newton — Simulación criogénica © 2025</p>
+  </footer>
+
+  <script>
+  let chart;
+
+  function mostrarSimulacion() {
+    document.getElementById("problema").style.display = "none";
+    document.getElementById("simulacion").style.display = "block";
+  }
+
+  function volverInicio() {
+    document.getElementById("problema").style.display = "block";
+    document.getElementById("simulacion").style.display = "none";
+  }
+
+  function calcularEnfriamiento() {
+    const T_ini = parseFloat(document.getElementById('tempInicial').value);
+    const T_amb = parseFloat(document.getElementById('tempAmbiente').value);
+    const t = parseFloat(document.getElementById('tiempo').value);
+    const k = parseFloat(document.getElementById('k').value);
+
+    const T_t = T_amb + (T_ini - T_amb) * Math.exp(-k * t);
+
+    let mensaje, color;
+    if (T_t <= -150 && T_t >= -196) {
+      mensaje = "✅ Conservación segura: las pajillas están en condiciones óptimas.";
+      color = "#00ff80";
+    } else if (T_t > -150 && T_t <= -130) {
+      mensaje = "⚠️ Zona de riesgo: puede comenzar el daño celular, revisar el contenedor.";
+      color = "orange";
+    } else if (T_t > -130) {
+      mensaje = "❌ Dañadas: el semen se ha deteriorado irreversiblemente.";
+      color = "red";
+    } else {
+      mensaje = "❄️ Temperatura extremadamente baja: riesgo de fractura en el material genético.";
+      color = "#00bfff";
+    }
+
+    document.getElementById('resultado').innerHTML = `
+      Después de ${t} minutos, la temperatura será de 
+      <strong>${T_t.toFixed(2)} °C</strong><br>
+      <span style="color:${color}; font-weight:bold;">${mensaje}</span>
+    `;
+
+    const tiempos = [];
+    const temps = [];
+    for (let i = 0; i <= t; i += 2) {
+      tiempos.push(i);
+      temps.push(T_amb + (T_ini - T_amb) * Math.exp(-k * i));
+    }
+
+    if (chart) chart.destroy();
+
+    const ctx = document.getElementById('grafica').getContext('2d');
+
+    // ✨ Animación de aparición del gráfico
+    ctx.canvas.style.opacity = 0;
+    setTimeout(() => ctx.canvas.style.transition = "opacity 1s", 10);
+    setTimeout(() => ctx.canvas.style.opacity = 1, 100);
+
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: tiempos,
+        datasets: [{
+          label: 'Temperatura (°C)',
+          data: temps,
+          borderColor: color,
+          backgroundColor: color + '33',
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'nearest', intersect: false },
+        plugins: {
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            borderColor: color,
+            borderWidth: 1,
+            callbacks: {
+              label: function(context) {
+                return `Tiempo: ${context.label} min → ${context.parsed.y.toFixed(2)} °C`;
+              }
+            }
+          },
+          legend: { labels: { color: '#fff' } }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Tiempo (min)', color: '#fff' },
+            ticks: { color: '#fff' },
+            grid: { color: 'rgba(255,255,255,0.1)' }
+          },
+          y: {
+            title: { display: true, text: 'Temperatura (°C)', color: '#fff' },
+            ticks: { color: '#fff' },
+            grid: { color: 'rgba(255,255,255,0.1)' }
+          }
+        }
+      }
+    });
+  }
+
+  // 🌌 Fondo animado tipo energía violeta
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function createParticles() {
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 3 + 1,
+        dx: (Math.random() - 0.5) * 0.8,
+        dy: (Math.random() - 0.5) * 0.8
+      });
+    }
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = '#b66bff';
+    ctx.fillStyle = 'rgba(180,120,255,0.7)';
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+
+  createParticles();
+  drawParticles();
+  </script>
+</body>
+</html>
